@@ -16,6 +16,10 @@ CFLAGS += -Wall
 CFLAGS += -fmessage-length=0
 CFLAGS += -DSTM32F103x6
 CFLAGS += -O0
+CFLAGS += -msoft-float
+CFLAGS += -mfloat-abi=soft
+CFLAGS += -DVVC_F1
+CFLAGS += -DVVC_STM32f103C6
 
 ASFLAGS = -c
 ASFLAGS += -Wall
@@ -31,6 +35,12 @@ LFLAGS += -lgcc
 LFLAGS += --specs=nosys.specs
 LFLAGS += -fmessage-length=0
 LFLAGS += -nostdlib
+LFLAGS += -msoft-float
+LFLAGS += -mfloat-abi=soft
+LFLAGS += --static
+LFLAGS += -Wl, -Map=$(TARGET).map
+LFLAGS += -Wl, --gc-sections
+LFLAGS += -lc
 LFLAGS += -T$(LD_SCRIPT)
 
 CC = arm-none-eabi-gcc
@@ -39,7 +49,18 @@ OC = arm-none-eabi-objcopy
 OS = arm-none-eabi-size
 
 C_SRC = main.c
+C_SRC += ./frtos/portable/GCC/ARM_CM3/port.c
+C_SRC += ./frtos/list.c
+C_SRC += ./frtos/tasks.c
+C_SRC += ./frtos/queue.c
+C_SRC += ./frtos/portable/MemMang/heap_4.c
+
 AS_SRC = $(INC)/startup_stm32f103x6.s
+
+INCLUDE = -I./
+INCLUDE += -I./includes
+INCLUDE += -I./frtos/include
+INLCUDE += -I./frtos/portable/GCC/ARM_CM3
 
 OBJS = $(C_SRC:.c=.o)
 OBJS += $(AS_SRC:.s=.o) 	
@@ -52,7 +73,7 @@ all: $(TARGET).bin
 	$(AS) $(ASFLAGS) -c $< -o $@
 
 %.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(INCLUDE) $(CFLAGS) -c $< -o $@
 
 $(TARGET).elf: $(OBJS)
 	$(CC) $^ $(LFLAGS) -o $@
@@ -60,4 +81,12 @@ $(TARGET).elf: $(OBJS)
 $(TARGET).bin: $(TARGET).elf
 	$(OC) -S -O binary $< $@
 	$(OS) $<
+
+.PHONY: clean
+
+clean:
+	rm -f $(OBJS)
+	rm -f $(TARGET).elf
+	rm -f $(TARGET).bin
+	rm -f $(TARGET).map
 
