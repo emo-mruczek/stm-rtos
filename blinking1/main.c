@@ -1,4 +1,4 @@
-#include "stm32f1xx.h"
+#include "includes/stm32f1xx.h"
 
 int main(void) {
 
@@ -20,23 +20,13 @@ int main(void) {
 
 
     while(1) {
-        uint32_t gpioa_input = GPIOA->IDR & GPIO_IDR_IDR0; // idr is read-only
-        // checking the bit with AND (something AND 1)
-        
-       
-        /* is pressed? */
-        if (!gpioa_input) {
-            uint32_t count = 10000;
+            uint32_t count = 100000;
 
             /* silly debouncer */
             while (count--) {
                 __asm__("nop");
             }
 
-            if(!(GPIOA->IDR  & GPIO_IDR_IDR0 )) {
                 GPIOC->ODR ^= GPIO_ODR_ODR13; // finally, toggle
-                while (!(GPIOA->IDR  & GPIO_IDR_IDR0));
-            }
         }
-     }
 }
