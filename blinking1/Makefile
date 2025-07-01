@@ -60,7 +60,7 @@ AS_SRC = $(INC)/startup_stm32f103x6.s
 INCLUDE = -I./
 INCLUDE += -I./includes
 INCLUDE += -I./frtos/include
-INLCUDE += -I./frtos/portable/GCC/ARM_CM3
+INCLUDE += -I./frtos/portable/GCC/ARM_CM3
 
 OBJS = $(C_SRC:.c=.o)
 OBJS += $(AS_SRC:.s=.o) 	
