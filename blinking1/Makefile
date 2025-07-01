@@ -38,8 +38,8 @@ LFLAGS += -nostdlib
 LFLAGS += -msoft-float
 LFLAGS += -mfloat-abi=soft
 LFLAGS += --static
-LFLAGS += -Wl, -Map=$(TARGET).map
-LFLAGS += -Wl, --gc-sections
+LFLAGS += -Wl,-Map=$(TARGET).map
+LFLAGS += -Wl,--gc-sections
 LFLAGS += -lc
 LFLAGS += -T$(LD_SCRIPT)
 
