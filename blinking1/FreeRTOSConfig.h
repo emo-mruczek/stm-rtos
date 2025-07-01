@@ -185,7 +185,7 @@
 
 #define vPortSVCHandler                         SVC_handler
 
-#define xPortPendSVHandler                      pending_SV_handler
+#define xPortPendSVHandler                      PendSV_handler
 
 #define xPortSysTickHandler                     SysTick_handler
 
