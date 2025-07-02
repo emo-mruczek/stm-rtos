@@ -1,32 +1,39 @@
-#include "includes/stm32f1xx.h"
+#include "stm32f1xx.h"
+#include "FreeRTOS.h"
+#include "task.h"
+
+static const int delay_1 = 2137;
+
+static void led_task(void* args);
 
 int main(void) {
 
-    /* enable clock for ports: A and C */
+    /* enable clock for ports: A */
     RCC->APB2ENR |= RCC_APB2ENR_IOPAEN;
-    RCC->APB2ENR |= RCC_APB2ENR_IOPCEN;
+
+    /* TODO: clock setup, tick setup */
  
     // mind its in output mode
     GPIOC->CRH &= ~GPIO_CRH_MODE13_Msk; // clear mode bits
     GPIOC->CRH |= GPIO_CRH_MODE13_0;  // Set MODE13[0]-bit -> now is 01, in output mode
     GPIOC->CRH &= ~GPIO_CRH_CNF13_Msk; // clear both CNF13[1:0] bits -> make it 00 push-pull
     
-    /* A0 pin -> mind CRL! */
-    //  pull-up  pull-down //
-    GPIOA->CRL &= ~GPIO_CRL_MODE0_Msk;// zeroing (unnecesary), to make it input 00
-    GPIOA->CRL &= ~GPIO_CRL_CNF0_Msk; // same as up, zeroing
-    GPIOA->CRL |= GPIO_CRL_CNF0_1; // as the pin is in input mode, 10 means "input with pull-up/pull-down"
-    GPIOA->ODR |= GPIO_ODR_ODR0; // just resetting output data register
+    /* create tasks */
+    /* TODO: understanging what these words mean */
+    xTaskCreate(led_task, "blinking", 128, (void*)(&delay_1), configMAX_PRIORITIES - 1, NULL);
 
+    vTaskStartScheduler();
+}
 
-    while(1) {
-            uint32_t count = 100000;
+/* task definition */
 
-            /* silly debouncer */
-            while (count--) {
-                __asm__("nop");
-            }
+static void led_task(void* args) {
+    int delay_ms = *((int*)args);
+    
+    while (1) {
+        /* toggle */
+        GPIOC->ODR ^= GPIO_ODR_ODR13;
 
-                GPIOC->ODR ^= GPIO_ODR_ODR13; // finally, toggle
-        }
+        vTaskDelay(pdMS_TO_TICKS(delay_ms));
+    }
 }
