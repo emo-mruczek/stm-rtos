@@ -1,0 +1,10 @@
+CompileFlags:
+  Add: [
+    -xc, 
+    -DSTM32F103x6,
+    -I../..,
+    -I../../includes,
+    -I../include,
+    -I../portable/GCC/ARM_CM3,
+    -I./
+  ]
