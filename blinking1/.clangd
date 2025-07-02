@@ -6,4 +6,5 @@ CompileFlags:
     -I./includes,
     -I./frtos/include,
     -I./frtos/portable/GCC/ARM_CM3
+    -I./frtos/portable/MemMang
   ]

@@ -48,12 +48,12 @@ AS = arm-none-eabi-as
 OC = arm-none-eabi-objcopy
 OS = arm-none-eabi-size
 
-C_SRC = main.c
+C_SRC = ./frtos/portable/MemMang/heap_4.c
 C_SRC += ./frtos/portable/GCC/ARM_CM3/port.c
 C_SRC += ./frtos/list.c
 C_SRC += ./frtos/tasks.c
 C_SRC += ./frtos/queue.c
-C_SRC += ./frtos/portable/MemMang/heap_4.c
+C_SRC += main.c
 
 AS_SRC = $(INC)/startup_stm32f103x6.s
 
@@ -61,6 +61,7 @@ INCLUDE = -I./
 INCLUDE += -I./includes
 INCLUDE += -I./frtos/include
 INCLUDE += -I./frtos/portable/GCC/ARM_CM3
+INCLUDE += -I./frtos/portable/MemMang
 
 OBJS = $(C_SRC:.c=.o)
 OBJS += $(AS_SRC:.s=.o) 	
