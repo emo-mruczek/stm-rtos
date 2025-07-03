@@ -9,7 +9,7 @@
 
 #define configUSE_PREEMPTION                                        1
 
-#define configUSE_PORT_OPTIMISED_TASK_SELECTION                     1
+#define configUSE_PORT_OPTIMISED_TASK_SELECTION                     0
 
 #define configUSE_TICKLESS_IDLE                                     0
 
@@ -70,7 +70,7 @@
 
 #define configAPPLICATION_ALLOCATED_HEAP                            0
 
-#define configSTACK_ALLOCATION_FROM_SEPARATE_HEAP                   1
+#define configSTACK_ALLOCATION_FROM_SEPARATE_HEAP                   0
 
 
 /* Hook function related definitions. */
@@ -106,7 +106,7 @@
 
 /* Software timer related definitions. */
 
-#define configUSE_TIMERS                                    1
+#define configUSE_TIMERS                                    0
 
 #define configTIMER_TASK_PRIORITY                           3
 
@@ -188,6 +188,11 @@
 #define xPortPendSVHandler                      PendSV_handler
 
 #define xPortSysTickHandler                     SysTick_handler
+
+
+/* im stupid */
+
+#define configKERNEL_PROVIDED_STATIC_MEMORY     1
 
 
 #endif /* FREERTOS_CONFIG_H */
